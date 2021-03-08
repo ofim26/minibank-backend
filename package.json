@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
-    "build": "tsc",
+    "prebuild": "app/tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "app/tsc",
     "prestart": "npm run build",
     "start": "node .",
     "start:watch": "nodemon",
@@ -20,9 +20,6 @@
   "engines": {
     "node": "=13.14.0"
   },
-  "files": [
-    "tslint.json"
-  ],
   "nodemonConfig": {
     "ignore": [
       "**/*.test.ts",
