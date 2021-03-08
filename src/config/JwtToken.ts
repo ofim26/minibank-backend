@@ -1,5 +1,6 @@
 import express from "express";
 import * as jwt from "jsonwebtoken";
+import { jwtConfig } from "./jwtconfig";
 
 /**
  * Jwt
@@ -22,7 +23,7 @@ class JwtToken {
                 return res.status(401).send("Unauhtorized Request");
             }
 
-            const payload = await jwt.verify(token, "$2b$10$OvdhxzOgRk04xmCIR.IvNOOzzLayaTyPtXnU1GW7yck5yFnJhV6/m");
+            const payload = await jwt.verify(token, jwtConfig.SECRET);
             if (!payload) {
                 return res.status(401).send("Unauhtorized Request");
             }

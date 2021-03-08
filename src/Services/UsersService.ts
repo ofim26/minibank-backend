@@ -4,6 +4,7 @@ import * as jwt from "jsonwebtoken";
 import { Op } from "sequelize";
 import { Balance } from "../Models/Balance";
 import { User } from "../Models/User";
+import { jwtConfig } from "../config/jwtconfig";
 
 /**
  * UsersService
@@ -16,11 +17,10 @@ class UsersService {
      * @param next
      */
     public authenticate(req: express.Request, res: express.Response, next: express.NextFunction) {
-        const secret = "$2b$10$OvdhxzOgRk04xmCIR.IvNOOzzLayaTyPtXnU1GW7yck5yFnJhV6/m";
         User.findOne( { where: {[Op.and]: [{ email: req.body.email.toLowerCase()}]} })
         .then((data) => {
             if (data && bcrypt.compareSync(req.body.password, data.password)) {
-                const token = jwt.sign({ name: data.name }, secret);
+                const token = jwt.sign({ name: data.name }, jwtConfig.SECRET);
                 res.status(200).json({
                     id: data.id,
                     name: data.name,
