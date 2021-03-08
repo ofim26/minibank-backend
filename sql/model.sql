@@ -20,11 +20,11 @@
 -- Create schema
 --
 CREATE SCHEMA IF NOT EXISTS minibank;
-ALTER SCHEMA minibank OWNER TO adminbank;
+ALTER SCHEMA minibank OWNER TO coxhvhvaihmfsb;
 SET SCHEMA 'minibank';
-GRANT ALL ON SCHEMA minibank TO adminbank WITH GRANT option;
+GRANT ALL ON SCHEMA minibank TO coxhvhvaihmfsb WITH GRANT option;
 
--- 
+--
 -- Create table users
 --
 CREATE TABLE IF NOT EXISTS minibank.users (
@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS minibank.users (
   rut integer NOT NULL,
   created_at timestamp without time zone DEFAULT (now() at time zone 'utc') NOT NULL
 );
-ALTER TABLE minibank.users OWNER TO adminbank;
+ALTER TABLE minibank.users OWNER TO coxhvhvaihmfsb;
 
--- 
+--
 -- Create table balance
 --
 CREATE TABLE IF NOT EXISTS minibank.balance (
@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS minibank.balance (
   user_id bigserial NOT NULL CONSTRAINT balance_user_id_constraint REFERENCES users UNIQUE,
   balance money NOT NULL DEFAULT 0
 );
-ALTER TABLE minibank.balance  OWNER TO adminbank;
+ALTER TABLE minibank.balance  OWNER TO coxhvhvaihmfsb;
 
--- 
+--
 -- Create table movements
 --
 CREATE TABLE IF NOT EXISTS minibank.movements (
@@ -57,4 +57,4 @@ CREATE TABLE IF NOT EXISTS minibank.movements (
   amount money NOT NULL,
   created_at timestamp without time zone DEFAULT (now() at time zone 'utc') NOT NULL
 );
-ALTER TABLE minibank.movements OWNER TO adminbank;
+ALTER TABLE minibank.movements OWNER TO coxhvhvaihmfsb;
