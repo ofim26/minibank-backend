@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "prebuild": "/app/.heroku/node/bin/tslint -c tslint.json -p tsconfig.json --fix",
-    "build": "/app/.heroku/node/bin/tsc",
+    "prebuild": "./.heroku/node/bin/tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "./.heroku/node/bin/tsc",
     "prestart": "npm run build",
     "start": "node .",
     "start:watch": "nodemon",
