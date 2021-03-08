@@ -20,6 +20,9 @@
   "engines": {
     "node": "=13.14.0"
   },
+  "files": [
+    "tslint.json"
+  ],
   "nodemonConfig": {
     "ignore": [
       "**/*.test.ts",
