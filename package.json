@@ -17,7 +17,7 @@
   },
   "author": "fidarraga",
   "license": "ISC",
-    "engines": {
+  "engines": {
     "node": "=13.14.0"
   },
   "nodemonConfig": {
@@ -47,7 +47,8 @@
     "sequelize": "^6.2.0",
     "sequelize-typescript": "^2.1.0",
     "swagger-jsdoc": "^3.5.0",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "ts-node": "^9.1.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
