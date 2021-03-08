@@ -2,9 +2,9 @@ import bcrypt from "bcrypt";
 import express from "express";
 import * as jwt from "jsonwebtoken";
 import { Op } from "sequelize";
+import { jwtConfig } from "../config/jwtconfig";
 import { Balance } from "../Models/Balance";
 import { User } from "../Models/User";
-import { jwtConfig } from "../config/jwtconfig";
 
 /**
  * UsersService
