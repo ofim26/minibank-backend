@@ -4,6 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "prebuild": ".heroku/node/bin/tslint -c tslint.json -p tsconfig.json --fix",
+    "build": ".heroku/node/bin/tsc",
+    "prestart": "npm run build",
     "start": "node .",
     "start:watch": "nodemon",
     "test": "echo \"Error: no test specified\" && exit 1"
