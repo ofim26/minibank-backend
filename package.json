@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "prebuild": "./.heroku/node/bin/tslint -c tslint.json -p tsconfig.json --fix",
-    "build": "./.heroku/node/bin/tsc",
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
     "prestart": "npm run build",
     "start": "node .",
     "start:watch": "nodemon",
@@ -47,7 +47,8 @@
     "sequelize": "^6.2.0",
     "sequelize-typescript": "^2.1.0",
     "swagger-jsdoc": "^3.5.0",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "tslint": "^5.12.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
