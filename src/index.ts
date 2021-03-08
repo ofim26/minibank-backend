@@ -45,7 +45,7 @@ app.use("/api/balance", balanceRoutes.transfer());
 app.use(handleError);
 
 // Port
-const port = process.env.SERVER_PORT || 8080;
+const port = process.env.SERVER_PORT || 3001;
 
 // Run server
 app.listen(port, () => console.log(`APP listening on port ${port}!`));
