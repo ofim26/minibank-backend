@@ -25,6 +25,7 @@ class UsersService {
                     id: data.id,
                     name: data.name,
                     rut: data.rut,
+                    email: data.email,
                     token
                 });
             } else {
