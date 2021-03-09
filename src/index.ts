@@ -1,10 +1,11 @@
 import bodyParser from "body-parser";
 import express from "express";
+import cors  from "cors";
 import swaggerUi from "swagger-ui-express";
 import { sequelize } from "./config/sequelize";
 import { getSwaggerSpecs } from "./config/swagger";
 import { balanceRoutes } from "./Routes/BalanceRoutes";
-import {handleError} from "./Routes/Error";
+import { handleError } from "./Routes/Error";
 import { movementsRoutes } from "./Routes/MovementsRoutes";
 import { usersRoutes } from "./Routes/UsersRoutes";
 
@@ -12,6 +13,7 @@ import { usersRoutes } from "./Routes/UsersRoutes";
 const app = express();
 
 // CORS
+app.use(cors())
 app.use( (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
