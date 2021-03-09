@@ -169,7 +169,7 @@ class BalanceService {
              */
             const movementWithdraw = {
                 userId: req.body.userId,
-                movementType: "WITHDRAW",
+                movementType: "TRANSFER",
                 amount: req.body.amount
             };
             await Movement.create(movementWithdraw)
