@@ -87,7 +87,7 @@ class BalanceService {
             ).then((data) => {
                 if (data[0] === 0) {
                     res.status(400).send({
-                        message: "The amount exceeds the balance"
+                        message: "THE_AMOUNT_EXCEEDS_THE_BALANCE"
                     });
                 }
             }).catch(next);
