@@ -14,8 +14,7 @@ class MovementsService {
      */
     public async findAllByUserId(req: express.Request, res: express.Response, next: express.NextFunction) {
         try {
-            const page = req.body.currentPage - 1 * req.body.itemsPerPage;
-            const offset = req.body.currentPage === 0 ? page : (req.body.currentPage - 1) * page;
+            const offset = req.body.currentPage === 0 ? 0 : (req.body.currentPage - 1) * req.body.itemsPerPage;;
             await Movement.findAndCountAll({
                 where: { transferredFromUserId: req.body.userId },
                 order: [["createdAt", "DESC"]],
