@@ -1,4 +1,5 @@
-import { AllowNull, AutoIncrement, Column, DataType, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { AllowNull, AutoIncrement, Column, DataType, ForeignKey, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { User } from "./User";
 /**
  * @swagger
  *  components:
@@ -52,6 +53,7 @@ export class Movement extends Model {
   public transferredFromUserId: number;
 
   @AllowNull(true)
+  @ForeignKey(() => User)
   @Unique
   @Column({
     type: DataType.INTEGER,
