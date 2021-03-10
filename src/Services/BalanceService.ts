@@ -97,7 +97,7 @@ class BalanceService {
             const movement = {
                 transferredFromUserId: req.body.userId,
                 movementType: "WITHDRAW",
-                amount: req.body.amount,
+                amount: req.body.amount
             };
             await Movement.create(movement)
             .catch(next);

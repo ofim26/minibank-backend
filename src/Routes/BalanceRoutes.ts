@@ -1,6 +1,6 @@
 import express, { Router } from "express";
-import { balanceService } from "../Services/BalanceService";
 import { jwtToken } from "../config/JwtToken";
+import { balanceService } from "../Services/BalanceService";
 
 /**
  * @swagger

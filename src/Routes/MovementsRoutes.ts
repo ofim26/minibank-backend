@@ -1,6 +1,6 @@
 import express, { Router } from "express";
-import { movementsService } from "../Services/MovementsService";
 import { jwtToken } from "../config/JwtToken";
+import { movementsService } from "../Services/MovementsService";
 
 /**
  * @swagger
