@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS minibank.users (
   email varchar(100) NOT NULL CONSTRAINT user_email_key UNIQUE,
   password varchar(120),
   name varchar(100) NOT NULL,
-  rut integer NOT NULL,
+  rut varchar(100) NOT NULL,
   created_at timestamp without time zone DEFAULT (now() at time zone 'utc') NOT NULL
 );
 ALTER TABLE minibank.users OWNER TO dnfaxchwacjtjl;
@@ -52,7 +52,8 @@ ALTER TABLE minibank.balance  OWNER TO dnfaxchwacjtjl;
 --
 CREATE TABLE IF NOT EXISTS minibank.movements (
   id bigserial NOT NULL CONSTRAINT movements_id_pkey PRIMARY KEY,
-  user_id bigserial NOT NULL CONSTRAINT movements_user_id_constraint REFERENCES users,
+  transferred_to_user_id bigserial CONSTRAINT movements_transferred_to_user_id_constraint REFERENCES users,
+  transferred_from_user_id bigserial NOT NULL CONSTRAINT movements_transferred_from_user_id_constraint REFERENCES users,
   movement_type varchar(15) NOT NULL,
   amount money NOT NULL,
   created_at timestamp without time zone DEFAULT (now() at time zone 'utc') NOT NULL

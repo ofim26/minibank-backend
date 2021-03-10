@@ -130,7 +130,7 @@ class BalanceService {
             }).then((data) => {
                 if (data === null) {
                     res.status(400).send({
-                        message: "User not exist"
+                        message: "USER_NOT_EXIST"
                     });
                 } else {
                     userToTransfer = data.id;
@@ -168,16 +168,18 @@ class BalanceService {
              * movements
              */
             const movementWithdraw = {
-                userId: req.body.userId,
-                movementType: "TRANSFER",
-                amount: req.body.amount
+                transferredFromUserId: req.body.userId,
+                transferredToUserId: userToTransfer,
+                movementType: "TRANSFERRED_TO",
+                amount: req.body.amount,
             };
             await Movement.create(movementWithdraw)
 
             .catch(next);
             const movementAdd = {
-                userId: userToTransfer,
-                movementType: "ADD",
+                transferredFromUserId: userToTransfer,
+                transferredToUserId: req.body.userId,
+                movementType: "TRANSFER_FROM",
                 amount: req.body.amount
             };
             await Movement.create(movementAdd)

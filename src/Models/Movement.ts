@@ -7,14 +7,16 @@ import { AllowNull, AutoIncrement, Column, DataType, Model, PrimaryKey, Table, U
  *        type: object
  *        required:
  *          - id
- *          - userId
+ *          - transferredFromUserId
  *          - movementType
  *          - amount
  *          - createdAt
  *        properties:
  *          id:
  *            type: integer
- *          userId:
+ *          transferredFromUserId:
+ *            type: integer
+ *          transferredToUserId:
  *            type: integer
  *          movementType:
  *            type: string
@@ -24,7 +26,8 @@ import { AllowNull, AutoIncrement, Column, DataType, Model, PrimaryKey, Table, U
  *            type: Date
  *        example:
  *           id: 0
- *           userId: integer
+ *           transferredFromUserId: integer
+ *           transferredToUserId: integer
  *           movementType: integer
  *           amount: integer
  *           createdAt: Date
@@ -44,9 +47,17 @@ export class Movement extends Model {
   @Unique
   @Column({
     type: DataType.INTEGER,
-    field: "user_id"
+    field: "transferred_from_user_id"
   })
-  public userId: number;
+  public transferredFromUserId: number;
+
+  @AllowNull(true)
+  @Unique
+  @Column({
+    type: DataType.INTEGER,
+    field: "transferred_to_user_id"
+  })
+  public transferredToUserId: number;
 
   @AllowNull(false)
   @Column({
