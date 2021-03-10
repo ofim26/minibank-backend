@@ -14,7 +14,12 @@ class MovementsService {
      */
     public async findAllByUserId(req: express.Request, res: express.Response, next: express.NextFunction) {
         try {
-            await Movement.findAll({where: { transferredFromUserId: req.params.userId }})
+            await Movement.findAndCountAll({
+                where: { transferredFromUserId: req.params.userId },
+                order: [["createdAt", "DESC"]],
+                limit: 5,
+                offset: 0,
+            })
             .then((data) => res.status(200).json(data))
             .catch(next);
         } catch (error) {

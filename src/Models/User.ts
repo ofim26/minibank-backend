@@ -1,4 +1,6 @@
-import { AllowNull, AutoIncrement, Column, DataType, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { AllowNull, AutoIncrement, Column, DataType, HasMany, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
+import { Movement } from "./Movement";
+
 /**
  * @swagger
  *  components:
@@ -77,4 +79,7 @@ export class User extends Model {
     field: "created_at"
   })
   public createdAt: Date;
+
+  @HasMany(() => Movement)
+  public movements: Movement[];
 }

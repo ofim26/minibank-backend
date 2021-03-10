@@ -1,9 +1,8 @@
-// import { Sequelize } from "sequelize";
 import { Sequelize } from "sequelize-typescript";
 import { dbConfig } from "../config/dbconfig";
-import {Balance} from "../Models/Balance";
-import {Movement} from "../Models/Movement";
-import {User} from "../Models/User";
+import { Balance } from "../Models/Balance";
+import { Movement } from "../Models/Movement";
+import { User } from "../Models/User";
 
 /**
  * Sequelize
