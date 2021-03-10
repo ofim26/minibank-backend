@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import { movementsService } from "../Services/MovementsService";
+import { jwtToken } from "../config/JwtToken";
 
 /**
  * @swagger
@@ -50,7 +51,7 @@ class MovementsRoutes {
          *              schema:
          *                $ref: '#/components/schemas/Error'
          */
-        this.router.post("/", movementsService.findAllByUserId);
+        this.router.post("/", jwtToken.verifyToken, movementsService.findAllByUserId);
         return this.router;
     }
 }

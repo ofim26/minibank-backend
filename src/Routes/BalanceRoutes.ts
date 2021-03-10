@@ -1,5 +1,6 @@
 import express, { Router } from "express";
 import { balanceService } from "../Services/BalanceService";
+import { jwtToken } from "../config/JwtToken";
 
 /**
  * @swagger
@@ -48,7 +49,7 @@ class BalanceRoutes {
          *              schema:
          *                $ref: '#/components/schemas/Error'
          */
-        this.router.get("/:userId", balanceService.getBalanceByUserId);
+        this.router.get("/:userId", jwtToken.verifyToken, balanceService.getBalanceByUserId);
         return this.router;
     }
 
@@ -92,7 +93,7 @@ class BalanceRoutes {
          *              schema:
          *                $ref: '#/components/schemas/Error'
          */
-        this.router.put("/add", balanceService.add);
+        this.router.put("/add", jwtToken.verifyToken, balanceService.add);
         return this.router;
     }
 
@@ -136,7 +137,7 @@ class BalanceRoutes {
          *              schema:
          *                $ref: '#/components/schemas/Error'
          */
-        this.router.put("/withdraw", balanceService.withdraw);
+        this.router.put("/withdraw", jwtToken.verifyToken, balanceService.withdraw);
         return this.router;
     }
 
@@ -180,7 +181,7 @@ class BalanceRoutes {
          *              schema:
          *                $ref: '#/components/schemas/Error'
          */
-        this.router.put("/transfer", balanceService.transfer);
+        this.router.put("/transfer", jwtToken.verifyToken, balanceService.transfer);
         return this.router;
     }
 }
