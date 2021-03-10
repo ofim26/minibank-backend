@@ -64,22 +64,22 @@ class UsersService {
          */
         if (!req.body.name) {
             res.status(400).send({
-                message: "Field Name can not be empty"
+                message: "FIELD_NAME_CAN_NOT_BE_EMPTY"
             });
         }
         if (!req.body.email) {
             res.status(400).send({
-                message: "Field Email can not be empty"
+                message: "FIELD_EMAIL_CAN_NOT_BE_EMPTY"
             });
         }
         if (!req.body.rut) {
             res.status(400).send({
-                message: "Field Rut can not be empty"
+                message: "FIELD_RUT_CAN_NOT_BE_EMPTY"
             });
         }
         if (!req.body.password) {
             res.status(400).send({
-                message: "Field Email can not be empty"
+                message: "FIELD_PASSWORD_CAN_NOT_BE_EMPTY"
             });
         }
 
@@ -91,7 +91,7 @@ class UsersService {
         .then((data) => {
             if (data !== null) {
                 res.status(400).send({
-                    message: "Email or RUT already exists"
+                    message: "RUT_OR_EMAIL_EXIST"
                 });
                 return;
             }
