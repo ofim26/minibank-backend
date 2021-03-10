@@ -17,17 +17,19 @@ class MovementsRoutes {
         /**
          * @swagger
          * path:
-         *  /movements/{userId}:
-         *    get:
+         *  /movements:
+         *    post:
          *      summary: Get All Movement
          *      tags: [Movements]
-         *      parameters:
-         *        - in: path
-         *          name: userId
-         *          schema:
-         *            type: integer
-         *          required: true
-         *          description: User ID
+         *      consumes:
+         *        - application/json
+         *      requestBody:
+         *        description: IUser Authenticate
+         *        required: true
+         *        content:
+         *          application/json:
+         *            schema:
+         *              $ref: '#/components/schemas/IMovementsRequest'
          *      responses:
          *        "200":
          *          description: Movement Model
@@ -48,7 +50,7 @@ class MovementsRoutes {
          *              schema:
          *                $ref: '#/components/schemas/Error'
          */
-        this.router.get("/:userId", movementsService.findAllByUserId);
+        this.router.post("/", movementsService.findAllByUserId);
         return this.router;
     }
 }

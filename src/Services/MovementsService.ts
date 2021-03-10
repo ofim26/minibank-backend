@@ -15,10 +15,10 @@ class MovementsService {
     public async findAllByUserId(req: express.Request, res: express.Response, next: express.NextFunction) {
         try {
             await Movement.findAndCountAll({
-                where: { transferredFromUserId: req.params.userId },
+                where: { transferredFromUserId: req.body.userId },
                 order: [["createdAt", "DESC"]],
-                limit: 5,
-                offset: 0,
+                limit: req.body.itemsPerPage,
+                offset: req.body.currentPage * req.body.itemsPerPage,
             })
             .then((data) => res.status(200).json(data))
             .catch(next);

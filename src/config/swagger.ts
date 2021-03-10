@@ -47,7 +47,8 @@ export const getSwaggerSpecs = (): object => {
           "./src/Payloads/IUserRequest.ts",
           "./src/Payloads/IBalanceRequest.ts",
           "./src/Payloads/IBalanceTransferRequest.ts",
-          "./src/Payloads/IUserAuthenticateRequest.ts"
+          "./src/Payloads/IUserAuthenticateRequest.ts",
+          "./src/Payloads/IMovementsRequest.ts"
         ]
     };
     const specs = swaggerJsdoc(options);
