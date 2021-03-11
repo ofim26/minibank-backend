@@ -87,7 +87,7 @@ class UsersService {
          * Database validations
          */
         const condition = { [Op.or]: [ { email: req.body.email.toLowerCase() }, { rut: req.body.rut } ] };
-        await User.findOne({ where: condition, raw: true })
+        await User.findAll({ where: condition, raw: true })
         .then((data) => {
             if (data !== null) {
                 res.status(400).send({

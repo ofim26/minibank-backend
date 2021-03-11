@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS minibank.users (
   email varchar(100) NOT NULL CONSTRAINT user_email_key UNIQUE,
   password varchar(120),
   name varchar(100) NOT NULL,
-  rut varchar(100) NOT NULL,
+  rut varchar(100) NOT NULL UNIQUE,
   created_at timestamp without time zone DEFAULT (now() at time zone 'utc') NOT NULL
 );
 ALTER TABLE minibank.users OWNER TO dnfaxchwacjtjl;
