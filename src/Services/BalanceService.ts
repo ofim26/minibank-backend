@@ -1,7 +1,7 @@
 import express from "express";
-import { balanceRepository } from "../Repositories/BalanceRepository";
+import { Op } from "sequelize";
 import { Balance } from "../Models/Balance";
-
+import { balanceRepository } from "../Repositories/BalanceRepository";
 
 /**
  * BalanceService
@@ -88,8 +88,16 @@ class BalanceService {
                             res.status(400).send({message: "THE_AMOUNT_EXCEEDS_THE_BALANCE"});
                         } else {
                             balanceRepository.transferMoney(req.body.amount, userToTransfer);
-                            balanceRepository.createMovemnet(req.body.userId, userToTransfer, "TRANSFERRED_TO", req.body.amount);
-                            balanceRepository.createMovemnet(userToTransfer, req.body.userId, "TRANSFERRED_FROM", req.body.amount);
+                            balanceRepository.createMovemnet(
+                                req.body.userId, userToTransfer,
+                                "TRANSFERRED_TO", req.body.amount
+                            );
+                            balanceRepository.createMovemnet(
+                                userToTransfer,
+                                req.body.userId,
+                                "TRANSFERRED_FROM",
+                                req.body.amount
+                            );
                             balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
                                 res.status(200).json(data);
                             });

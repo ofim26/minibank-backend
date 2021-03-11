@@ -1,4 +1,3 @@
-import express from "express";
 import { literal, Op } from "sequelize";
 import { Balance } from "../Models/Balance";
 import { Movement } from "../Models/Movement";
@@ -7,7 +6,7 @@ import { User } from "../Models/User";
 /**
  * BalanceService
  */
- class BalanceRepository {
+class BalanceRepository {
     /**
      * userExist
      * @param rut
@@ -66,7 +65,7 @@ import { User } from "../Models/User";
      * @param transferredToUserId
      */
     public createMovemnet(transferredFromUserId: number,
-                           transferredToUserId: number, type: string, amount: number): Promise<any>  {
+                          transferredToUserId: number, type: string, amount: number): Promise<any>  {
         const movementWithdraw = {
             transferredFromUserId,
             transferredToUserId,
@@ -85,4 +84,4 @@ import { User } from "../Models/User";
         return Balance.findOne( { where: { userId: { [Op.eq]: userId }}});
     }
  }
- export const balanceRepository = new BalanceRepository();
+export const balanceRepository = new BalanceRepository();
