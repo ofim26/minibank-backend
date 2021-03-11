@@ -35,13 +35,12 @@ class BalanceService {
     public add = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
             balanceRepository.addMoney(req.body.amount, req.body.userId);
-            balanceRepository.createMovemnet(req.body.userId, null, "ADD", req.body.amount).then((data: any) => {
-                balanceRepository.getBalanceUser(req.body.userId).then((data1: any) => {
-                    res.status(200).json(data1);
-                });
+            balanceRepository.createMovemnet(req.body.userId, null, "ADD", req.body.amount)
+            balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
+                res.status(200).json(data);
             });
         } catch (error) {
-            next(error);
+            next(error)
         }
     }
 
@@ -58,16 +57,14 @@ class BalanceService {
                 if (resp1[0] === 0) {
                     res.status(400).send({message: "THE_AMOUNT_EXCEEDS_THE_BALANCE"});
                 } else {
-                    balanceRepository.createMovemnet(req.body.userId, null, "WITHDRAW", req.body.amount)
-                    .then((data: any) => {
-                        balanceRepository.getBalanceUser(req.body.userId).then((data1: any) => {
-                            res.status(200).json(data1);
-                        });
+                    balanceRepository.createMovemnet(req.body.userId, null, "WITHDRAW", req.body.amount);
+                    balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
+                        res.status(200).json(data);
                     });
                 }
             });
         } catch (error) {
-            next(error);
+            next(error)
         }
     }
 
@@ -100,18 +97,16 @@ class BalanceService {
                                 req.body.userId,
                                 "TRANSFERRED_FROM",
                                 req.body.amount
-                            ).then((data: any) => {
-                                balanceRepository.getBalanceUser(req.body.userId).then((data1: any) => {
-                                    res.status(200).json(data1);
-                                });
+                            );
+                            balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
+                                res.status(200).json(data);
                             });
-
                         }
                     });
                 }
             });
         } catch (error) {
-            next(error);
+            next(error)
         }
     }
 }
