@@ -21,7 +21,7 @@ class BalanceService {
             .then((data) => res.status(200).json(data))
             .catch(next);
         } catch (error) {
-            next(error);
+            next(error)
         }
     }
 
@@ -35,12 +35,13 @@ class BalanceService {
     public add = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
             balanceRepository.addMoney(req.body.amount, req.body.userId);
-            balanceRepository.createMovemnet(req.body.userId, null, "ADD", req.body.amount);
-            balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
-                res.status(200).json(data);
-            });
+            balanceRepository.createMovemnet(req.body.userId, null, "ADD", req.body.amount).then((data: any) => {
+                balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
+                    res.status(200).json(data);
+                })
+            })
         } catch (error) {
-            next(error);
+            next(error)
         }
     }
 
@@ -57,14 +58,15 @@ class BalanceService {
                 if (resp1[0] === 0) {
                     res.status(400).send({message: "THE_AMOUNT_EXCEEDS_THE_BALANCE"});
                 } else {
-                    balanceRepository.createMovemnet(req.body.userId, null, "WITHDRAW", req.body.amount);
-                    balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
-                        res.status(200).json(data);
-                    });
+                    balanceRepository.createMovemnet(req.body.userId, null, "WITHDRAW", req.body.amount).then((data: any) => {
+                        balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
+                            res.status(200).json(data);
+                        })
+                    })
                 }
             });
         } catch (error) {
-            next(error);
+            next(error)
         }
     }
 
@@ -91,16 +93,18 @@ class BalanceService {
                             balanceRepository.createMovemnet(
                                 req.body.userId, userToTransfer,
                                 "TRANSFERRED_TO", req.body.amount
-                            );
+                            )
                             balanceRepository.createMovemnet(
                                 userToTransfer,
                                 req.body.userId,
                                 "TRANSFERRED_FROM",
                                 req.body.amount
-                            );
-                            balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
-                                res.status(200).json(data);
-                            });
+                            ).then((data: any) => {
+                                balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
+                                    res.status(200).json(data);
+                                });
+                            })
+
                         }
                     });
                 }
