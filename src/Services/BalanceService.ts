@@ -139,7 +139,7 @@ class BalanceService {
         return Balance.update(
             {balance: literal(" balance::money + " + amount + "::money ")},
             { where: { userId: { [Op.eq]: userId } } }
-        )
+        );
     }
 
     /**

@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS minibank.movements (
   id bigserial NOT NULL CONSTRAINT movements_id_pkey PRIMARY KEY,
   transferred_to_user_id bigserial CONSTRAINT movements_transferred_to_user_id_constraint REFERENCES users,
   transferred_from_user_id bigserial NOT NULL CONSTRAINT movements_transferred_from_user_id_constraint REFERENCES users,
-  movement_type varchar(15) NOT NULL,
+  movement_type varchar(20) NOT NULL,
   amount money NOT NULL,
   created_at timestamp without time zone DEFAULT (now() at time zone 'utc') NOT NULL
 );
