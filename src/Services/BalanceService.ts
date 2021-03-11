@@ -8,6 +8,7 @@ import { User } from "../Models/User";
  * BalanceService
  */
 class BalanceService {
+
     /**
      * getBalanceByUserId
      *
@@ -34,31 +35,11 @@ class BalanceService {
      */
     public async add(req: express.Request, res: express.Response, next: express.NextFunction) {
         try {
-            /**
-             *
-             */
-            await Balance.update(
-                {balance: literal(" balance::money + " + req.body.amount + "::money ")},
-                { where: { userId: { [Op.eq]: req.body.userId } } }
-            )
-            .catch(next);
-            /**
-             *
-             */
-            const movement = {
-                transferredFromUserId: req.body.userId,
-                movementType: "ADD",
-                amount: req.body.amount
-            };
-            await Movement.create(movement)
-            .catch(next);
-            /**
-             *
-             */
-            await Balance.findOne( { where: { userId: { [Op.eq]: req.body.userId } } } )
-            .then((data) => {
-                res.json(data);
-            }).catch(next);
+            this.addMoney(req.body.amount, req.body.userId);
+            this.createMovemnet(req.body.userId, null, "ADD", req.body.amount);
+            this.getBalanceUser(req.body.userId).then((data: any) => {
+                res.status(200).json(data);
+            });
         } catch (error) {
             next(error);
         }
@@ -73,41 +54,16 @@ class BalanceService {
      */
     public async withdraw(req: express.Request, res: express.Response, next: express.NextFunction) {
         try {
-            /**
-             *
-             */
-            await Balance.update(
-                {balance: literal(" balance::money - " + req.body.amount + "::money ")},
-                {where: {
-                    [Op.and]: [
-                        { userId: req.body.userId },
-                        literal(" balance::money >= " + req.body.amount + "::money ")
-                    ]
-                }}
-            ).then((data) => {
-                if (data[0] === 0) {
-                    res.status(400).send({
-                        message: "THE_AMOUNT_EXCEEDS_THE_BALANCE"
+            this.whitdrawMoney(req.body.amount, req.body.userId).then((resp1: any) => {
+                if (resp1[0] === 0) {
+                    res.status(400).send({message: "THE_AMOUNT_EXCEEDS_THE_BALANCE"});
+                } else {
+                    this.createMovemnet(req.body.userId, null, "WITHDRAW", req.body.amount);
+                    this.getBalanceUser(req.body.userId).then((data: any) => {
+                        res.status(200).json(data);
                     });
                 }
-            }).catch(next);
-            /**
-             *
-             */
-            const movement = {
-                transferredFromUserId: req.body.userId,
-                movementType: "WITHDRAW",
-                amount: req.body.amount
-            };
-            await Movement.create(movement)
-            .catch(next);
-            /**
-             *
-             */
-            await Balance.findOne( { where: { userId: { [Op.eq]: req.body.userId } } } )
-            .then((data) => {
-                res.json(data);
-            }).catch(next);
+            });
         } catch (error) {
             next(error);
         }
@@ -120,81 +76,108 @@ class BalanceService {
      * @param res
      * @param next
      */
-    public async transfer(req: express.Request, res: express.Response, next: express.NextFunction) {
+    public transfer = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
-            /**
-             *
-             */
             let userToTransfer: number = 0;
-            await User.findOne({where: {[Op.and]: [{rut: req.body.rut }, literal(" id <> " + req.body.userId)]}
-            }).then((data) => {
-                if (data === null) {
-                    res.status(400).send({
-                        message: "USER_NOT_EXIST"
-                    });
+            this.userToTransferExist(req.body.rut, req.body.userId).then((resp: any) => {
+                if (resp === null) {
+                    res.status(400).send({message: "USER_NOT_EXIST"});
                 } else {
-                    userToTransfer = data.id;
-                }
-            }).catch(next);
-
-            /**
-             * withdraw money
-             */
-            await Balance.update(
-                {balance: literal(" balance::money - " + req.body.amount + "::money ")},
-                {where: {
-                    [Op.and]: [
-                        { userId: req.body.userId },
-                        literal(" balance::money >= " + req.body.amount + "::money ")
-                    ]
-                }}
-            ).then((data) => {
-                if (data[0] === 0) {
-                    res.status(400).send({
-                        message: "THE_AMOUNT_EXCEEDS_THE_BALANCE"
+                    userToTransfer = resp.dataValues.id;
+                    this.whitdrawMoney(req.body.amount, req.body.userId).then((resp1: any) => {
+                        if (resp1[0] === 0) {
+                            res.status(400).send({message: "THE_AMOUNT_EXCEEDS_THE_BALANCE"});
+                        } else {
+                            this.transferMoney(req.body.amount, userToTransfer);
+                            this.createMovemnet(req.body.userId, userToTransfer, "TRANSFERRED_TO", req.body.amount);
+                            this.createMovemnet(userToTransfer, req.body.userId, "TRANSFERRED_FROM", req.body.amount);
+                            this.getBalanceUser(req.body.userId).then((data: any) => {
+                                res.status(200).json(data);
+                            });
+                        }
                     });
                 }
-            }).catch(next);
-
-            /**
-             * pass money
-             */
-            await Balance.update(
-                {balance: literal(" balance::money + " + req.body.amount + "::money ")},
-                {where: { userId: userToTransfer } }
-            ).catch(next);
-
-            /**
-             * movements
-             */
-            const movementWithdraw = {
-                transferredFromUserId: req.body.userId,
-                transferredToUserId: userToTransfer,
-                movementType: "TRANSFERRED_TO",
-                amount: req.body.amount,
-            };
-            await Movement.create(movementWithdraw)
-
-            .catch(next);
-            const movementAdd = {
-                transferredFromUserId: userToTransfer,
-                transferredToUserId: req.body.userId,
-                movementType: "TRANSFER_FROM",
-                amount: req.body.amount
-            };
-            await Movement.create(movementAdd)
-            .catch(next);
-
-            /**
-             * return
-             */
-            await Balance.findOne( { where: { userId: { [Op.eq]: req.body.userId } } } )
-            .then((data) => {
-                res.status(200).json(data);
-            }).catch(next);
+            });
         } catch (error) {
             next(error);
         }
+    }
+
+    /**
+     * userExist
+     * @param rut
+     * @param userId
+     * @returns
+     */
+    public userToTransferExist(rut: string, userId: number): Promise<any> {
+        return User.findOne({where: {[Op.and]: [{rut }, literal(" id <> " + userId)]}});
+    }
+
+    /**
+     * whitdrawMoney
+     * @param amount
+     * @param userId
+     */
+    public whitdrawMoney(amount: number, userId: number): Promise<any> {
+        return Balance.update(
+            {balance: literal(" balance::money - " + amount + "::money ")},
+            {where: {
+                [Op.and]: [
+                    { userId },
+                    literal(" balance::money >= " + amount + "::money ")
+                ]
+            }}
+        );
+    }
+
+    /**
+     * addMoney
+     * @param amount
+     * @param userId
+     */
+    private addMoney(amount: number, userId: number): Promise<any> {
+        return Balance.update(
+            {balance: literal(" balance::money + " + amount + "::money ")},
+            { where: { userId: { [Op.eq]: userId } } }
+        );
+    }
+
+    /**
+     * addBalance
+     * @param amount
+     * @param userId
+     */
+         private transferMoney(amount: number, userId: number): Promise<any> {
+            return Balance.update(
+                {balance: literal(" balance::money + " + amount + "::money ")},
+                {where: { userId } }
+            );
+        }
+
+    /**
+     * createMovemnet
+     * @param type
+     * @param transferredFromUserId
+     * @param transferredToUserId
+     */
+    private createMovemnet(transferredFromUserId: number,
+                           transferredToUserId: number, type: string, amount: number): Promise<any>  {
+        const movementWithdraw = {
+            transferredFromUserId,
+            transferredToUserId,
+            movementType: type,
+            amount,
+        };
+        return Movement.create(movementWithdraw);
+    }
+
+    /**
+     *
+     * @param userId
+     * @param res
+     */
+    private getBalanceUser(userId: number): Promise<any> {
+        return Balance.findOne( { where: { userId: { [Op.eq]: userId }}});
     }
 }
 export const balanceService = new BalanceService();
