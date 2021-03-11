@@ -33,7 +33,7 @@ class BalanceService {
      * @param res
      * @param next
      */
-    public async add(req: express.Request, res: express.Response, next: express.NextFunction) {
+    public add = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
             this.addMoney(req.body.amount, req.body.userId);
             this.createMovemnet(req.body.userId, null, "ADD", req.body.amount);
@@ -52,7 +52,7 @@ class BalanceService {
      * @param res
      * @param next
      */
-    public async withdraw(req: express.Request, res: express.Response, next: express.NextFunction) {
+    public withdraw = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
             this.whitdrawMoney(req.body.amount, req.body.userId).then((resp1: any) => {
                 if (resp1[0] === 0) {
@@ -139,7 +139,7 @@ class BalanceService {
         return Balance.update(
             {balance: literal(" balance::money + " + amount + "::money ")},
             { where: { userId: { [Op.eq]: userId } } }
-        );
+        )
     }
 
     /**
@@ -147,11 +147,11 @@ class BalanceService {
      * @param amount
      * @param userId
      */
-         private transferMoney(amount: number, userId: number): Promise<any> {
-            return Balance.update(
-                {balance: literal(" balance::money + " + amount + "::money ")},
-                {where: { userId } }
-            );
+    private transferMoney(amount: number, userId: number): Promise<any> {
+    return Balance.update(
+        {balance: literal(" balance::money + " + amount + "::money ")},
+        {where: { userId } }
+    );
         }
 
     /**
