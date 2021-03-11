@@ -35,12 +35,12 @@ class BalanceService {
     public add = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         try {
             balanceRepository.addMoney(req.body.amount, req.body.userId);
-            balanceRepository.createMovemnet(req.body.userId, null, "ADD", req.body.amount)
+            balanceRepository.createMovemnet(req.body.userId, null, "ADD", req.body.amount);
             balanceRepository.getBalanceUser(req.body.userId).then((data: any) => {
                 res.status(200).json(data);
             });
         } catch (error) {
-            next(error)
+            next(error);
         }
     }
 
@@ -64,7 +64,7 @@ class BalanceService {
                 }
             });
         } catch (error) {
-            next(error)
+            next(error);
         }
     }
 
@@ -106,7 +106,7 @@ class BalanceService {
                 }
             });
         } catch (error) {
-            next(error)
+            next(error);
         }
     }
 }
