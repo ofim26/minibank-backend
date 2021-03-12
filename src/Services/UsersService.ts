@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import express from "express";
 import * as jwt from "jsonwebtoken";
 import { Op } from "sequelize";
+import { email } from "../config/Email";
 import { jwtConfig } from "../config/jwtconfig";
 import { Balance } from "../Models/Balance";
 import { User } from "../Models/User";
@@ -109,9 +110,15 @@ class UsersService {
         };
         let userId: number = 0;
         let userData: object = {};
+
         await User.create(user).then((data) => {
             userId = data.id;
             userData = data;
+
+            email.sendMail(
+                user.email,
+                "Tu cuenta en Minibank a sido creada exitosamente",
+                "Hola " + user.name + " tu cuenta en Minibank a sido creada exitosamente. Puedes ingresar desde el siguiente enlace https://minibank-frontend.herokuapp.com/");
         }).catch(next);
 
         /**
