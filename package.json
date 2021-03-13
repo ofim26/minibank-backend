@@ -48,7 +48,9 @@
     "sequelize": "^6.2.0",
     "sequelize-typescript": "^2.1.0",
     "swagger-jsdoc": "^3.5.0",
-    "swagger-ui-express": "^4.1.6",
+    "swagger-ui-express": "^4.1.6"
+  },
+  "devDependencies": {
     "@types/nodemailer": "^6.4.0",
     "@types/bcrypt": "^3.0.0",
     "@types/bluebird": "^3.5.33",
